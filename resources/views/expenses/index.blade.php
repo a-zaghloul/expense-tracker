@@ -35,7 +35,7 @@
                     <table class="table">
                     <thead>
                         <tr>
-                        <th scope="col">
+                            <th scope="col">
                                 <a href="{{ route('expenses.index', array_merge(request()->all(), ['sortBy' => 'id', 'direction' => request('sortBy') == 'id' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="text-dark text-decoration-none">
                                     ID @if(request('sortBy') == 'id') {{ request('direction') == 'asc' ? '↑' : '↓' }} @endif
                                 </a>
