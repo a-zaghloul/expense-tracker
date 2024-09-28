@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExpenseRequest;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -15,22 +16,17 @@ class ExpenseController extends Controller
     {
         $sortBy = $request->input('sortBy', 'date');  // Default sorting by date
         $direction = $request->input('direction', 'desc');  // Default descending order
-
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
         $user = $request->user();
-
         $expenses = $user->expenses()->orderBy($sortBy, $direction);
 
         if ($startDate) {
             $expenses->whereDate('date', '>=', $startDate);
         }
-
         if ($endDate) {
             $expenses->whereDate('date', '<=', $endDate);
         }
-
         $expenses = $expenses->paginate(10);
 
         return view('expenses.index', compact('expenses', 'sortBy', 'direction'));
@@ -49,19 +45,10 @@ class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ExpenseRequest $request)
     {
         $user = $request->user();
-
-        $validated = $request->validate([
-            'description' => ['required', 'string', 'max:255', 'min:3'],
-            'amount' => ['required', 'numeric'],
-            'date' => ['required', 'date', 'before:tomorrow'],
-            'expense_category_id' => ['required','exists:expense_categories,id'],
-        ]);
-
-        $user->expenses()->create($validated);
-
+        $user->expenses()->create($request->input());
         return redirect('/expenses');
     }
 
@@ -87,18 +74,10 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Expense $expense, Request $request)
+    public function update(Expense $expense, ExpenseRequest $request)
     {
         Gate::authorize('update', $expense);
-        $validated = $request->validate([
-            'description' => ['required', 'string', 'max:255', 'min:3'],
-            'amount' => ['required', 'numeric'],
-            'date' => ['required', 'date', 'before:tomorrow'],
-            'expense_category_id' => ['required','exists:expense_categories,id'],
-        ]);
-
-        $expense->update($validated);
-
+        $expense->update($request->input());
         return redirect('/expenses');
     }
 
