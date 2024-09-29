@@ -15,11 +15,8 @@ class ExpenseCategoryController extends Controller
     {
         $sortBy = $request->input('sortBy', 'name');
         $direction = $request->input('direction', 'asc');
-
         $name = $request->input('name');
-
         $user = $request->user();
-
         $categories = $user->categories()->orderBy($sortBy, $direction);
 
         if ($name) {
