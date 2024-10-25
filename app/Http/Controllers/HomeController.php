@@ -67,12 +67,6 @@ class HomeController extends Controller
     }
 
     private function getPieChart($user) {
-        // $expensesPerCategories = $user->categories()
-        //                             ->select('id', 'name')
-        //                             ->withCount('expenses')
-        //                             ->get();
-        // $categoriesLabels = $expensesPerCategories->pluck('name');
-        // $categoriesData = $expensesPerCategories->pluck('expenses_count');
 
         $expensesPerCategories = $user->categories()
                                     ->select('id', 'name')
@@ -80,7 +74,6 @@ class HomeController extends Controller
                                     ->get()
                                     ->pluck('expenses_sum_amount', 'name');
 
-        // $expensesPerCategories->toArray();
         $labels = $expensesPerCategories->keys();
         $values = $expensesPerCategories->values();
 
