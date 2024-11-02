@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Charts\ExpensesChart;
-use Nette\Schema\Expect;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -28,24 +25,11 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $monthlyExpenses = $this->getMonthlyExpenses($user);
+        $monthlyExpenses = $user->getMonthlyExpenses();
         $linechart = $this->getLineChart($monthlyExpenses, 'Monthly Expenses');
         $piechart = $this->getPieChart($user);
 
         return view('home', compact('linechart', 'piechart'));
-    }
-
-    private function getMonthlyExpenses($user) {
-        $monthlyExpenses = $user->expenses->groupBy(function($date) {
-            return Carbon::parse($date->date)->format('Y-m'); // Group by year and month
-        })->map(function ($row) {
-            return $row->sum('amount'); // Sum the amount for each group
-        });
-        $sortedMonthlyExpenses = $monthlyExpenses->sortKeys();
-        $formattedMonthlyExpenses = $sortedMonthlyExpenses->mapWithKeys(function($value, $key) {
-            return [Carbon::createFromFormat('Y-m', $key)->format('F Y') => $value];
-        });
-        return $formattedMonthlyExpenses;
     }
 
     private function getLineChart($data, $title) {
