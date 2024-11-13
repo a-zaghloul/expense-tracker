@@ -22,7 +22,7 @@ jobs:
           php-version: '8.2.12'
           extensions: mbstring, sqlite3, pdo_sqlite
           ini-values: post_max_size=256M, max_execution_time=180
-          coverage: xdebug
+          coverage: none
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -46,4 +46,4 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database.testing.sqlite
-        run: php artisan test --env=testing -v
+        run: php artisan test --env=testing
