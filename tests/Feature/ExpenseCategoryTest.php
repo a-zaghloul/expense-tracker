@@ -71,7 +71,7 @@ class ExpenseCategoryTest extends TestCase
         !$this->assertDatabaseHas('expense_categories', ['id' => $category->id]);
     }
 
-    #[Test]
+    // #[Test]
     // public function authenticated_user_can_view_his_list_of_expenses() {
     //     $user = User::factory()->create();
     //     $categories = ExpenseCategory::factory()->count(3)->create(['user_id' => $user->id]);
