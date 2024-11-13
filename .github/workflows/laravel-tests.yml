@@ -30,6 +30,12 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate --env=testing
 
+      - name: Verify database setup
+        run: |
+          ls -al database
+          cat database/database.testing.sqlite
+          php artisan migrate:status --env=testing
+          
       - name: Run migrations
         env:
           DB_CONNECTION: sqlite
