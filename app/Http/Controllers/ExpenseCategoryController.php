@@ -13,18 +13,18 @@ class ExpenseCategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $sortBy = $request->input('sortBy', 'name');
+        $direction = $request->input('direction', 'asc');
         $name = $request->input('name');
-
         $user = $request->user();
-
-        $categories = $user->categories();
+        $categories = $user->categories()->orderBy($sortBy, $direction);
 
         if ($name) {
             $categories->where('name', 'like', "%".$name."%");
         }
 
         $categories = $categories->paginate(5);
-        return view('expensecategories.index', compact('categories'));
+        return view('expensecategories.index', compact('categories', 'sortBy', 'direction'));
     }
 
     /**

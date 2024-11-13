@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layout>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -32,7 +30,11 @@
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">name</th>
+                        <th scope="col">
+                            <a href="{{ route('expensecategories.index', array_merge(request()->all(), ['sortBy' => 'name', 'direction' => request('sortBy') == 'name' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="text-dark text-decoration-none">
+                                Name @if(request('sortBy') == 'name') {{ request('direction') == 'asc' ? '↑' : '↓' }} @endif
+                            </a>
+                        </th>
                         <th scope="col"></th>
                         </tr>
                     </thead>
@@ -71,4 +73,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-layout>

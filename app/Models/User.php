@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements CanResetPassword
 {
@@ -54,5 +55,18 @@ class User extends Authenticatable implements CanResetPassword
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getMonthlyExpenses() {
+        $monthlyExpenses = $this->expenses->groupBy(function($date) {
+            return Carbon::parse($date->date)->format('Y-m'); // Group by year and month
+        })->map(function ($row) {
+            return $row->sum('amount'); // Sum the amount for each group
+        });
+        $sortedMonthlyExpenses = $monthlyExpenses->sortKeys();
+        $formattedMonthlyExpenses = $sortedMonthlyExpenses->mapWithKeys(function($value, $key) {
+            return [Carbon::createFromFormat('Y-m', $key)->format('F Y') => $value];
+        });
+        return $formattedMonthlyExpenses;
     }
 }

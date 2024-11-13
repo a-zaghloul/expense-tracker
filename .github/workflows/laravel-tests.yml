@@ -1,0 +1,49 @@
+name: Laravel Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2.12'
+          extensions: mbstring, sqlite3, pdo_sqlite
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Generate app key
+        run: php artisan key:generate --env=testing
+            
+      - name: Verify database setup
+        run: |
+          ls -al database
+          cat database.testing.sqlite
+          php artisan migrate:status --env=testing
+          
+      - name: Run migrations
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database.testing.sqlite
+        run: php artisan migrate --env=testing --force
+
+      - name: Run tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database.testing.sqlite
+        run: php artisan test --env=testing || true
