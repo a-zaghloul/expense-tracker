@@ -83,21 +83,21 @@ class ExpenseTest extends TestCase
         !$this->assertDatabaseHas('expenses', ['id' => $expense->id]);
     }
 
-    // #[Test]
-    // public function authenticated_user_can_view_his_list_of_expenses() {
-    //     $user = User::factory()->create();
-    //     $expenses = Expense::factory()->count(3)->create(['user_id' => $user->id]);
+    #[Test]
+    public function authenticated_user_can_view_his_list_of_expenses() {
+        $user = User::factory()->create();
+        $expenses = Expense::factory()->count(3)->create(['user_id' => $user->id]);
 
-    //     $this->actingAs($user);
+        $this->actingAs($user);
 
-    //     $response = $this->get("/expenses");
+        $response = $this->get("/expenses");
 
-    //     $response->assertOk();
-    //     $response->assertViewIs("expenses.index");
-    //     $response->assertViewHas('expenses', function($viewExpenses) use ($expenses){
-    //         return $viewExpenses->pluck('id')->diff($expenses->pluck('id'))->isEmpty();
-    //     });
-    // }
+        $response->assertOk();
+        $response->assertViewIs("expenses.index");
+        $response->assertViewHas('expenses', function($viewExpenses) use ($expenses){
+            return $viewExpenses->pluck('id')->diff($expenses->pluck('id'))->isEmpty();
+        });
+    }
 
     #[Test]
     public function it_fails_to_create_expense_if_wrong_fields_values_provided() {
