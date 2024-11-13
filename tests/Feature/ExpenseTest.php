@@ -100,7 +100,7 @@ class ExpenseTest extends TestCase
     // }
 
     #[Test]
-    public function if_fails_to_create_expense_if_wrong_fields_values_provided() {
+    public function it_fails_to_create_expense_if_wrong_fields_values_provided() {
         $user = User::factory()->create();
         $this->actingAs($user);
         $url = '/expenses';
