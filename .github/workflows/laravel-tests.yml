@@ -30,6 +30,9 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate --env=testing
 
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+            
       - name: Verify database setup
         run: |
           ls -al database
@@ -46,4 +49,4 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database.testing.sqlite
-        run: php artisan test --env=testing
+        run: php artisan test
