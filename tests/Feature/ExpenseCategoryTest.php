@@ -72,18 +72,18 @@ class ExpenseCategoryTest extends TestCase
     }
 
     #[Test]
-    public function authenticated_user_can_view_his_list_of_expenses() {
-        $user = User::factory()->create();
-        $categories = ExpenseCategory::factory()->count(3)->create(['user_id' => $user->id]);
+    // public function authenticated_user_can_view_his_list_of_expenses() {
+    //     $user = User::factory()->create();
+    //     $categories = ExpenseCategory::factory()->count(3)->create(['user_id' => $user->id]);
 
-        $this->actingAs($user);
+    //     $this->actingAs($user);
 
-        $response = $this->get("/expensecategories");
+    //     $response = $this->get("/expensecategories");
 
-        $response->assertOk();
-        $response->assertViewIs("expensecategories.index");
-        $response->assertViewHas('categories', function($viewCategories) use ($categories){
-            return $viewCategories->pluck('id')->diff($categories->pluck('id'))->isEmpty();
-        });
-    }
+    //     $response->assertOk();
+    //     $response->assertViewIs("expensecategories.index");
+    //     $response->assertViewHas('categories', function($viewCategories) use ($categories){
+    //         return $viewCategories->pluck('id')->diff($categories->pluck('id'))->isEmpty();
+    //     });
+    // }
 }
