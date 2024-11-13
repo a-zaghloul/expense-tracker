@@ -28,7 +28,7 @@
                             <a class="nav-link {{ (request()->is('/')) ? 'active' : '' }} aria-current="page" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('expenses')) ? 'active' : '' }}" href="{{ url('/expenses') }}">Expensess</a>
+                            <a class="nav-link {{ (request()->is('expenses')) ? 'active' : '' }}" href="{{ url('/expenses') }}">Expenses</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('expensecategories')) ? 'active' : '' }}" href="{{ url('/expensecategories') }}">Expenses Categories</a>
