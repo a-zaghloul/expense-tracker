@@ -46,4 +46,4 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database.testing.sqlite
-        run: php artisan test --env=testing
+        run: php artisan test --env=testing -v
