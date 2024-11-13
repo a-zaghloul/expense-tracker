@@ -33,11 +33,11 @@ jobs:
       - name: Run migrations
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: ':memory:'
+          DB_DATABASE: database.testing.sqlite
         run: php artisan migrate --env=testing --force
 
       - name: Run tests
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: ':memory:'
+          DB_DATABASE: database.testing.sqlite
         run: php artisan test --env=testing
