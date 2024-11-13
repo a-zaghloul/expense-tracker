@@ -33,7 +33,7 @@ jobs:
       - name: Verify database setup
         run: |
           ls -al database
-          cat database/database.testing.sqlite
+          cat database.testing.sqlite
           php artisan migrate:status --env=testing
           
       - name: Run migrations
